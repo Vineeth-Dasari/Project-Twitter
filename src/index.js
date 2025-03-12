@@ -23,7 +23,9 @@ app.listen(3000, async () => {
     // tweet.comment.push(comment);
     // await tweet.save();
     // console.log(tweet);
-    const tweetrepo = new TweetRepository();
-    const tweet = await tweetrepo.getWithComment('67d174ce67a0664e7fb210ff');
-    console.log(tweet);
+    // const tweetrepo = new TweetRepository();
+    // const tweet = await tweetrepo.getWithComment('67d174ce67a0664e7fb210ff');
+    // console.log(tweet);
+
+    
 })
