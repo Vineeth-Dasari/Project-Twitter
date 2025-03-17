@@ -1,17 +1,35 @@
 const {TweetRepository} = require('../repository/index');
 
-class TweetService { 
+const {HashtagRepository} = require('../repository/index');
 
-    constuctor() {
+
+
+class TweetService { 
+    constructor(){
         this.tweetRepository = new TweetRepository();
+        this.hashtagRepository =  new HashtagRepository();
     }
 
     async create(data) {
         const content = data.content;
-        const tags = content.match(/#[a-zA-Z0-9_]+/g);      // this regex extracts hastags.
-        tags = tags.map((tag) => tag.substring(1));
-        console.log(tags);
+        const tags = content.match(/#[a-zA-Z0-9_]+/g).map((tag) => tag.substring(1));;      // this regex extracts hastags.
+        
         const tweet = await this.tweetRepository.create(data);
+        
+        let alreadyPresenttags = await this.hashtagRepository.findByName(tags);
+        
+        let titleOfPresentTags = alreadyPresenttags.map(tags => tags.title);     // here we filer all the tags from the hashrepo file (See doc- 45)
+    
+        let newTags = tags.filter(tag => !titleOfPresentTags.includes(tag));         // this will give all the tags which are not present in hashrepo (! this will not equals for all the includes)
+        newTags = newTags.map(tag => {
+            return {title :  tag, tweets : [tweet.id]}
+        })
+
+        const reponse = await this.hashtagRepository.bulkCreate(newTags);
+        alreadyPresenttags.forEach((tag) => {
+            tag.tweets.push(tweet.id);
+            tag.save();
+        });
         return tweet;
     }
 
