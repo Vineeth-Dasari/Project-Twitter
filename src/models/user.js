@@ -19,6 +19,13 @@ const UserSchema = new mongoose.Schema({
     
 }, {timestamps : true}) ;
 
+UserSchema.pre('save', function (next) {
+    const user = this;
+    const SALT = bcrypt.genSaltSync(9);
+    const encryptedPassword = bcrypt.hashSync(user.password, SALT);
+    user.password = encryptedPassword;
+    next();
+  });
 
 
 const User = mongoose.model('User', UserSchema);
