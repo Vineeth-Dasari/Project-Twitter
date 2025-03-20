@@ -16,7 +16,7 @@ passportAuth(passport);
 
 app.use('/api', apiRoutes);
 
-
+    
 app.listen(3000, async () => {
 
     console.log('server started at : 3000');
