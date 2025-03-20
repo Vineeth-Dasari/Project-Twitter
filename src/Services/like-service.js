@@ -4,7 +4,7 @@ const { LikeRepository, TweetRepository } = require('../repository/index');
 class LikeService{
     constructor(){
         this.likeRepository = new LikeRepository();
-        this.tweetRepository = new Tweetre
+        this.tweetRepository = new TweetRepository();
     }
 
     async toggleLike(modelId, modelType, userId){       // -- /api/v1/likes/toggle?id=modelid&type=Tweet
@@ -47,3 +47,5 @@ class LikeService{
     }
 
 }
+
+module.exports = LikeService;
